@@ -1,8 +1,9 @@
-![OpenGuard Logo](images/opengaurd.png)
 
 # OpenGuard Vulnerability Scanner
 
-OpenGuard is a powerful and easy-to-use vulnerability scanner that helps you secure your applications by identifying potential security issues. This README provides instructions for building and deploying OpenGuard using Docker.
+OpenGuard is an open-source vulnerability scanning tool designed to identify security weaknesses in systems and networks. As a fork and enhancement of the OpenVAS (Open Vulnerability Assessment System) project, OpenGuard offers comprehensive vulnerability scanning capabilities, making it an essential tool for security professionals, system administrators, and network engineers.
+
+![OpenGuard Logo](images/opengaurd.png)
 
 ## Table of Contents
 
@@ -19,6 +20,12 @@ OpenGuard is a powerful and easy-to-use vulnerability scanner that helps you sec
 
 The Greenbone Source code can be found at:
 [Greenbone Source Code](https://github.com/greenbone)
+
+- Extensive Vulnerability Database: OpenGuard utilizes a vast and regularly updated database of vulnerabilities to ensure the latest threats are detected.
+- Automated Scanning: Automate the scanning process to identify vulnerabilities across various network devices, applications, and systems.
+- Detailed Reporting: Generate comprehensive reports that include detailed findings, risk ratings, and recommended remediation steps.
+- Customizable Scans: Tailor scans to meet specific needs by configuring scan parameters and selecting targeted areas for assessment.
+- Integration Capabilities: Seamlessly integrate with other security tools and platforms to enhance overall security posture.
 
 The advantages of the Opengaurd container image vs the Greenbone images:
 - Able to run a full scanner in a sinlge image with or without volumes. 
