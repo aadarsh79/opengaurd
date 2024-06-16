@@ -65,14 +65,10 @@ To build the OpenGuard Docker image, follow these steps:
     cd opengaurd
     ```
 
-2. Build the Docker image:
+2. Build the opengaurd base and main Docker image:
     ```sh
-    docker build -t aadarsh79/opengaurd .
-    ```
-
-3. Or you can pull it from Docker Hub
-    ```sh
-    docker pull aadarsh79/opengaurd:latest
+    docker build -t aadarsh79/ogbase:latest ovasbase/
+    docker build -t aadarsh79/opengaurd:latest .
     ```
 
 ## Running the Docker Container Manually
@@ -86,7 +82,7 @@ Depending on your hardware, it can take anywhere from a few seconds to 30 minute
 
 The NVTs will update every time the container starts. Even if you leave your container running 24/7, the easiest way to update your NVTs is to restart the container.
 ```
-docker restart openvas
+docker restart opengaurd
 ```
 
 There is also a script in the container that will initiate the sync. 
@@ -95,10 +91,10 @@ There is also a script in the container that will initiate the sync.
 ```
 You can run the sync at anytime on a running container with:
 ```
-docker exec -it <container-name> /scripts/sync.sh
+docker exec -it opengaurd /scripts/sync.sh
 ```
 
-## Running with Docker Compose
+## Running docker container with Docker Compose
 
 1. There is a `docker-compose.yml` file in the compose directory of your project:
 

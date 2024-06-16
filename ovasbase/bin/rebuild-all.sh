@@ -5,5 +5,4 @@ if [ -z $tag ] ; then
 else
         tag="$tag"
 fi
-docker buildx build -t immauss/ovasbase:$tag --platform linux/arm64,linux/amd64,linux/arm/v7 --push  .
-#docker buildx build -t immauss/ovasbase:$tag --platform linux/arm64,linux/amd64 --push  .
+docker buildx build -t aadarsh79/ogbase:$tag --platform linux/arm64,linux/amd64 --push  .

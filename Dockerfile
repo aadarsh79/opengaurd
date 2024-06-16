@@ -1,8 +1,7 @@
-# Stage 0: 
-# Start with ovasbase with running dependancies installed.
-FROM aadarsh79/ogbase:latest
+# Stage 0: Build and install GVM dependencies and components
+FROM aadarsh79/ogbase:latest AS builder
 
-# Ensure apt doesn't ask any questions 
+# Ensure apt doesn't ask any questions
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 
@@ -36,31 +35,30 @@ COPY build.d/links.sh /build.d/
 RUN bash /build.d/links.sh
 # Stage 1: Start again with the ovasbase. Dependancies already installed
 FROM aadarsh79/ogbase:latest
-      
-#EXPOSE 9392
 ENV LANG=C.UTF-8
+
 # Copy the install from stage 0
-COPY --from=0 etc/gvm/pwpolicy.conf /usr/local/etc/gvm/pwpolicy.conf
-COPY --from=0 etc/logrotate.d/gvmd /etc/logrotate.d/gvmd
-COPY --from=0 lib/systemd/system /lib/systemd/system
-COPY --from=0 usr/local/bin /usr/local/bin
-COPY --from=0 usr/local/include /usr/local/include
-COPY --from=0 usr/local/lib /usr/local/lib
-COPY --from=0 usr/local/sbin /usr/local/sbin
-COPY --from=0 usr/local/share /usr/local/share
-COPY --from=0 usr/share/postgresql /usr/share/postgresql
-COPY --from=0 usr/lib/postgresql /usr/lib/postgresql
+COPY --from=builder etc/gvm/pwpolicy.conf /usr/local/etc/gvm/pwpolicy.conf
+COPY --from=builder etc/logrotate.d/gvmd /etc/logrotate.d/gvmd
+COPY --from=builder lib/systemd/system /lib/systemd/system
+COPY --from=builder usr/local/bin /usr/local/bin
+COPY --from=builder usr/local/include /usr/local/include
+COPY --from=builder usr/local/lib /usr/local/lib
+COPY --from=builder usr/local/sbin /usr/local/sbin
+COPY --from=builder usr/local/share /usr/local/share
+COPY --from=builder usr/share/postgresql /usr/share/postgresql
+COPY --from=builder usr/lib/postgresql /usr/lib/postgresql
 COPY confs/gvmd_log.conf /usr/local/etc/gvm/
 COPY confs/openvas_log.conf /usr/local/etc/openvas/
 COPY build.d/links.sh /
-RUN bash /links.sh 
+RUN bash /links.sh
 
 COPY update.ts /
 COPY build.rc /gvm-versions
 
 COPY base.sql.xz /usr/lib/base.sql.xz
 COPY var-lib.tar.xz /usr/lib/var-lib.tar.xz
-# Make sure we didn't just pull zero length files 
+# Make sure we didn't just pull zero length files
 RUN bash -c " if [ $(ls -l /usr/lib/base.sql.xz | awk '{print $5}') -lt 1200 ]; then exit 1; fi " && \
     bash -c " if [ $(ls -l /usr/lib/var-lib.tar.xz | awk '{print $5}') -lt 1200 ]; then exit 1; fi "
 
@@ -72,3 +70,4 @@ COPY scripts/* /scripts/
 HEALTHCHECK --interval=60s --start-period=300s --timeout=3s \
   CMD /scripts/healthcheck.sh || exit 1
 ENTRYPOINT [ "/scripts/start.sh" ]
+
